@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="100dp"
-        android:text="突然变得很开心，因为解决问题了" />
+        android:text="该睡觉了" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
