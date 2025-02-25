@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar"></style>
+
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- 设置启动页的背景颜色 -->
+        <item name="windowSplashScreenBackground">#B8EDD8D8</item>
+        <!-- 设置启动页的图标 -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
+        <!-- 设置启动页的图标动画 -->
+        <item name="windowSplashScreenAnimationDuration">8000</item>
+        <!-- 设置启动页结束后要跳转到的主题 -->
+        <item name="postSplashScreenTheme">@style/Theme.MyApplication</item>
+    </style>
+</resources>
