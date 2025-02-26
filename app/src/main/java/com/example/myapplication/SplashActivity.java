@@ -18,7 +18,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class); // 创建 Intent，用于从 SplashActivity2 跳转到 MainActivity
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class); // 创建 Intent，用于从 SplashActivity2 跳转到 MainActivity
                 startActivity(intent); // 启动 MainActivity
                 finish(); // 关闭当前的 SplashActivity2
             }

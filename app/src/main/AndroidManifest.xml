@@ -13,7 +13,10 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="false"> <!-- 设置为 false，表示该 Activity 不能被其他应用启动 -->
             <meta-data
                 android:name="android.app.lib_name"
