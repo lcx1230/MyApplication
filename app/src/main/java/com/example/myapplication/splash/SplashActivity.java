@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myapplication.R;
+import com.example.myapplication.auth.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

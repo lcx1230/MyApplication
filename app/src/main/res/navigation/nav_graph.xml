@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeFragment">
+
+    <!-- 首页 Fragment -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.myapplication.home.HomeFragment"
+        android:label="首页"
+        tools:layout="@layout/fragment_home" />
+
+    <!-- 咨询 Fragment -->
+    <fragment
+        android:id="@+id/consultationFragment"
+        android:name="com.example.myapplication.home.ConsultationFragment"
+        android:label="咨询"
+        tools:layout="@layout/fragment_consultation" />
+
+    <!-- 阅读 Fragment -->
+    <fragment
+        android:id="@+id/readingFragment"
+        android:name="com.example.myapplication.home.ReadingFragment"
+        android:label="阅读"
+        tools:layout="@layout/fragment_reading" />
+
+    <!-- 消息 Fragment -->
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="com.example.myapplication.home.MessagesFragment"
+        android:label="消息"
+        tools:layout="@layout/fragment_messages" />
+
+    <!-- 我的 Fragment -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.myapplication.home.ProfileFragment"
+        android:label="我的"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>

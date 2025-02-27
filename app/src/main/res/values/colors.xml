@@ -8,4 +8,12 @@
     <color name="back">#9D7E7E</color>
     <color name="orange">#D96E0C</color>
     <color name="yellow">#E6BF60</color>
+    <!-- 底部导航栏背景色 -->
+    <color name="bottom_nav_background">#F8F8F8</color>
+
+
+    <!-- 选中时的绿色 -->
+    <color name="colorPrimary">#E28EA9</color>
+    <!-- 未选中的灰色 -->
+    <color name="colorGrey">#B0BEC5</color>
 </resources>
