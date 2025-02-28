@@ -1,10 +1,13 @@
 package com.example.myapplication.auth;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -15,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,6 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText majorEditText;
     private TextInputEditText titleEditText;
 
+    private ImageView avatarImageView;  // 用于显示头像的ImageView
+
+    private static final int PICK_IMAGE_REQUEST = 1;  // 请求代码，用于选择图片
     private Button registerButton;
 
     @Override
@@ -78,9 +85,11 @@ public class RegisterActivity extends AppCompatActivity {
         titleEditText = findViewById(R.id.titleEditText);
         registerButton = findViewById(R.id.registerButton);
 
-        titleInputLayout.setVisibility(View.GONE); // Default state: hide title input for students
+        avatarImageView = findViewById(R.id.avatarImageView);  // 初始化头像ImageView
 
-        // Set up the listener for role selection
+        titleInputLayout.setVisibility(View.GONE); // 默认隐藏职称输入框（针对学生）
+
+        // 设置角色选择监听器，根据角色选择显示不同的输入框
         roleRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.studentRadioButton) {
                 titleInputLayout.setVisibility(View.GONE);
@@ -91,17 +100,18 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Set the click listener for the register button
+        // 注册按钮点击监听器
         registerButton.setOnClickListener(v -> registerUser());
-
-        // Set window insets listener for edge-to-edge layout
+        // 头像ImageView点击事件，打开图库选择图片
+        avatarImageView.setOnClickListener(v -> openImageChooser());
+        // 设置窗口Insets监听器，确保适应边缘到边缘的布局
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
-
+    //注册逻辑
     private void registerUser() {
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -206,6 +216,31 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+    // 打开图片选择器
+    private void openImageChooser() {
+        // 打开系统图库选择图片
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");  // 只选择图片
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+    //图片加载
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();  // 获取选择的图片URI
+            try {
+                // 使用Glide库加载选中的图片到ImageView
+                Glide.with(this)
+                        .load(imageUri)
+                        .circleCrop()
+                        .into(avatarImageView);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "图片加载失败", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private boolean isValidPhoneNumber(String phone) {
