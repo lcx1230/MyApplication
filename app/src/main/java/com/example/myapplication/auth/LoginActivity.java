@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
+    //登录逻辑
     private void login() {
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();

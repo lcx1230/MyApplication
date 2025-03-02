@@ -2,75 +2,161 @@ package com.example.myapplication.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import com.example.myapplication.R;
+import com.example.myapplication.adapter.HomeArticleAdapter;
+import com.example.myapplication.adapter.ImagePagerAdapter;
+import com.example.myapplication.model.HomeArticle;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends Fragment {
 
-    /**
-     * 定义一个接口，用于从 Fragment 向 Activity 传递数据。
-     * 这是一个回调接口，Activity 需要实现这个接口，才能接收到 Fragment 发送的数据。
-     */
     public interface OnDataPass {
-        /**
-         * 当数据需要传递时，Activity 会调用这个方法。
-         *
-         * @param data 要传递的数据，这里是一个字符串。
-         */
         void onDataPass(String data);
     }
 
-    /**
-     * 定义一个 OnDataPass 类型的变量，用于保存 Activity 传递过来的回调接口实例。
-     */
-    OnDataPass dataPasser;
+    private OnDataPass dataPasser;
+    private ViewPager viewPager;
+    private LinearLayout dotsLayout;
+    private ImageView[] dots;
+    private int currentPage = 1; // 真实的第一张图片索引
+    private final int[] realImageResIds = {R.drawable.home_01, R.drawable.home_02, R.drawable.home_03, R.drawable.home_04, R.drawable.home_05};
+    private int[] extendedImageResIds; // 额外的伪无限轮播图片数组
+    private final Handler handler = new Handler();
+    private Timer timer;
+    private RecyclerView recyclerView;
+    private HomeArticleAdapter articleAdapter;
+    private List<HomeArticle> articleList;
 
-    /**
-     * 当 Fragment 被附加到 Activity 上时，这个方法会被调用。
-     * 我们在这里获取 Activity 传递过来的回调接口实例。
-     *
-     * @param context Fragment 所附加到的 Activity 的 Context。
-     */
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            // 尝试将 Context 转换为 OnDataPass 接口类型。
-            // 如果 Activity 实现了 OnDataPass 接口，那么转换会成功，否则会抛出 ClassCastException 异常。
             dataPasser = (OnDataPass) context;
         } catch (ClassCastException e) {
-            // 如果 Activity 没有实现 OnDataPass 接口，则抛出异常，并提示 Activity 必须实现该接口。
-            throw new ClassCastException(context.toString() + " must implement OnDataPass");
+            throw new ClassCastException(context.toString() + " 必须实现 OnDataPass 接口");
         }
     }
 
-    /**
-     * 当 Fragment 需要创建它的视图时，这个方法会被调用。
-     * 我们在这里加载 Fragment 的布局文件。
-     *
-     * @param inflater           用于加载布局文件的 LayoutInflater。
-     * @param container          Fragment 的父容器。
-     * @param savedInstanceState 如果 Fragment 之前被销毁过，这里会保存之前的状态信息。
-     * @return Fragment 的根视图。
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // 使用 LayoutInflater 加载 fragment_home.xml 布局文件，并返回根视图。
-        // R.layout.fragment_home 表示 fragment_home.xml 布局文件的资源 ID。
-        // container 是 Fragment 的父容器，我们在这里传入它，是为了让系统知道这个 Fragment 应该放在哪里。
-        // false 表示我们不希望将加载的布局文件附加到 container 上，因为系统会自动处理。
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // 生成伪无限循环的图片列表
+        extendedImageResIds = new int[realImageResIds.length + 2];
+        extendedImageResIds[0] = realImageResIds[realImageResIds.length - 1]; // 最后一张的副本放到第 0 张
+        extendedImageResIds[extendedImageResIds.length - 1] = realImageResIds[0]; // 第一张的副本放到最后一张
+        System.arraycopy(realImageResIds, 0, extendedImageResIds, 1, realImageResIds.length); // 复制真实图片
+
+        // 初始化 ViewPager 和 指示点布局
+        viewPager = view.findViewById(R.id.viewPager);
+        dotsLayout = view.findViewById(R.id.dotsLayout);
+
+        // 滑动设置适配器
+        ImagePagerAdapter adapter = new ImagePagerAdapter(requireContext(), extendedImageResIds);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(currentPage, false); // 设置当前显示为真实的第一张
+        //recyclerView适配器
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // 初始化指示点
+        setupDots();
+        // 监听 ViewPager 滑动事件，更新指示点状态 + 无限循环
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    currentPage = realImageResIds.length;
+                    viewPager.setCurrentItem(currentPage, false); // 立刻跳到最后一张
+                } else if (position == extendedImageResIds.length - 1) {
+                    currentPage = 1;
+                    viewPager.setCurrentItem(currentPage, false); // 立刻跳到第一张
+                } else {
+                    currentPage = position;
+                }
+                updateDots(currentPage - 1); // 更新指示点
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+        // 启动自动轮播
+        startAutoSlide();
+        // 模拟网络爬取的数据（实际开发请替换为真实数据）
+        articleList = new ArrayList<>();
+        articleList.add(new HomeArticle("心理学效应", "https://www.xinli001.com/info/100498097",
+                "https://ossimg.xinli001.com/20241230/15011fcd2a26a32dee08f9ea3cf2bd06.jpeg!120x120",
+                "阿伦森效应...", "科普", "2024-12-30", "#人类行为研究"));
+
+        articleAdapter = new HomeArticleAdapter(getContext(), articleList);
+        recyclerView.setAdapter(articleAdapter);
+        return view;
     }
 
-    /**
-     * 在某个时刻传递数据到 Activity 的方法。
-     * 当我们需要从 Fragment 向 Activity 传递数据时，可以调用这个方法。
-     */
+    private void setupDots() {
+        dots = new ImageView[realImageResIds.length]; // 只有真正的图片才有指示点
+        for (int i = 0; i < realImageResIds.length; i++) {
+            dots[i] = new ImageView(requireContext());
+            dots[i].setImageResource(i == 0 ? R.drawable.dot_selected : R.drawable.dot_unselected);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(15, 15); // 小圆点大小
+            params.setMargins(5, 0, 5, 0); // 设置间距
+            dots[i].setLayoutParams(params);
+            dotsLayout.addView(dots[i]);
+        }
+    }
+
+    private void updateDots(int position) {
+        for (int i = 0; i < dots.length; i++) {
+            dots[i].setImageResource(i == position ? R.drawable.dot_selected : R.drawable.dot_unselected);
+        }
+    }
+
+    private void startAutoSlide() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(() -> {
+                    if (currentPage >= extendedImageResIds.length - 1) {
+                        currentPage = 1;
+                        viewPager.setCurrentItem(currentPage, false);
+                    } else {
+                        viewPager.setCurrentItem(currentPage++, true);
+                    }
+                    updateDots(currentPage - 1);
+                });
+            }
+        }, 2000, 3000);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
     public void sendData() {
-        // 调用 Activity 实现的 onDataPass 方法，并将数据传递过去。
-        dataPasser.onDataPass("Hello from HomeFragment");
+        if (dataPasser != null) {
+            dataPasser.onDataPass("Hello from HomeFragment");
+        }
     }
 }

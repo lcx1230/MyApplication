@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,7 +23,6 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
 public class RegisterActivity extends AppCompatActivity {
 
     private TextInputLayout majorInputLayout;
@@ -231,9 +231,10 @@ public class RegisterActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();  // 获取选择的图片URI
             try {
+                Log.d("imageUrl", "图片地址在这里:"+imageUri);
                 // 使用Glide库加载选中的图片到ImageView
                 Glide.with(this)
-                        .load(imageUri)
+                        .load("imageUri")
                         .circleCrop()
                         .into(avatarImageView);
             } catch (Exception e) {

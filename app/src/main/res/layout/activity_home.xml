@@ -28,11 +28,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:itemIconTint="@color/nav_item_icon_tint"
         app:itemTextColor="@color/nav_item_icon_tint"
         app:backgroundTint="@color/bottom_nav_background"
-
         app:labelVisibilityMode="labeled"
         app:itemBackground="@android:color/transparent"/>
 
