@@ -4,30 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <!-- 首页标题 -->
-    <TextView
-        android:id="@+id/tv_messages"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="首页"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="16dp"/>
+    android:padding="12dp"> <!-- 适当减少 padding，让内容更靠上 -->
 
     <!-- 搜索框 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"> <!-- 适当调整间距 -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="江大心语"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -51,21 +40,20 @@
             android:padding="8dp"/>
     </LinearLayout>
 
-    <!-- 心理测试卡片 -->
-    <!-- 心理测试 & 即时预约 卡片容器 -->
+    <!-- 心理测试 & 即时预约 卡片 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:weightSum="2">
 
         <!-- 心理测试 卡片 -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="110dp"
             android:layout_weight="1"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#FFC0CB"
             app:cardElevation="4dp"
             android:layout_marginEnd="8dp">
@@ -73,7 +61,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp">
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -97,9 +85,9 @@
         <!-- 即时预约 卡片 -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="110dp"
             android:layout_weight="1"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="16dp"
             app:cardBackgroundColor="#87CEEB"
             app:cardElevation="4dp"
             android:layout_marginStart="8dp">
@@ -107,7 +95,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp">
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,21 +117,18 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-
-    <!-- 使用 CardView 包裹 ViewPager 让其拥有圆角 -->
-    <!-- 轮播图 & 指示点 -->
+    <!-- 轮播图 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="12dp">
 
-        <!-- 轮播图 -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            app:cardCornerRadius="20dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="4dp">
 
             <androidx.viewpager.widget.ViewPager
@@ -159,15 +144,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
-
-
 
     <!-- 文章列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="12dp"/>
 </LinearLayout>

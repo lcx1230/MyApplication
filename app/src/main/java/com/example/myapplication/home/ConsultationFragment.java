@@ -17,6 +17,6 @@ public class ConsultationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // 加载布局文件
-        return inflater.inflate(R.layout.fragment_consultation, container, false);
+        return inflater.inflate(R.layout.fragment_counselor, container, false);
     }
 }

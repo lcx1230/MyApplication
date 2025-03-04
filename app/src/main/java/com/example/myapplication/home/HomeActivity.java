@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnDa
                 loadFragment(new HomeFragment());
                 return true;
             } else if (item.getItemId() == R.id.nav_consultation) {
-                loadFragment(new ConsultationFragment());
+                loadFragment(new CounselorFragment());
                 return true;
             } else if (item.getItemId() == R.id.nav_reading) {
                 loadFragment(new ReadingFragment());

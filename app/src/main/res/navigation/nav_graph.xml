@@ -14,9 +14,9 @@
     <!-- 咨询 Fragment -->
     <fragment
         android:id="@+id/consultationFragment"
-        android:name="com.example.myapplication.home.ConsultationFragment"
+        android:name="com.example.myapplication.home.CounselorFragment"
         android:label="咨询"
-        tools:layout="@layout/fragment_consultation" />
+        tools:layout="@layout/fragment_counselor" />
 
     <!-- 阅读 Fragment -->
     <fragment

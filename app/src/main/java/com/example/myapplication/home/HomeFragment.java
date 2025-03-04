@@ -17,6 +17,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.adapter.HomeArticleAdapter;
 import com.example.myapplication.adapter.ImagePagerAdapter;
 import com.example.myapplication.model.HomeArticle;
+import com.example.myapplication.utils.WebScraperHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,13 +67,19 @@ public class HomeFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         dotsLayout = view.findViewById(R.id.dotsLayout);
 
-        // 滑动设置适配器
+        //初始化滑动设置适配器
         ImagePagerAdapter adapter = new ImagePagerAdapter(requireContext(), extendedImageResIds);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(currentPage, false); // 设置当前显示为真实的第一张
-        //recyclerView适配器
+
+        // ✅ 确保 `articleList` 不是 null
+        articleList = new ArrayList<>();
+
+        //初始化recyclerView适配器
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        articleAdapter = new HomeArticleAdapter(getContext(), articleList);
+        recyclerView.setAdapter(articleAdapter);
         // 初始化指示点
         setupDots();
         // 监听 ViewPager 滑动事件，更新指示点状态 + 无限循环
@@ -99,15 +106,22 @@ public class HomeFragment extends Fragment {
         });
         // 启动自动轮播
         startAutoSlide();
-        // 模拟网络爬取的数据（实际开发请替换为真实数据）
-        articleList = new ArrayList<>();
-        articleList.add(new HomeArticle("心理学效应", "https://www.xinli001.com/info/100498097",
-                "https://ossimg.xinli001.com/20241230/15011fcd2a26a32dee08f9ea3cf2bd06.jpeg!120x120",
-                "阿伦森效应...", "科普", "2024-12-30", "#人类行为研究"));
+//        // 模拟网络爬取的数据（实际开发请替换为真实数据）
+//        articleList = new ArrayList<>();
+//        articleList.add(new HomeArticle("心理学效应", "https://www.xinli001.com/info/100498097",
+//                "https://ossimg.xinli001.com/20241230/15011fcd2a26a32dee08f9ea3cf2bd06.jpeg!120x120",
+//                "阿伦森效应...", "科普", "2024-12-30", "#人类行为研究"));
+        // 调用爬取方法
+        WebScraperHelper.fetchArticles(5, this::updateRecyclerView);
 
-        articleAdapter = new HomeArticleAdapter(getContext(), articleList);
-        recyclerView.setAdapter(articleAdapter);
+
         return view;
+    }
+    // 更新 RecyclerView
+    private void updateRecyclerView(List<HomeArticle> newArticles) {
+        articleList.clear();
+        articleList.addAll(newArticles);
+        articleAdapter.notifyDataSetChanged();
     }
 
     private void setupDots() {
