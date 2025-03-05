@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.dialogs.ReservationDialog;
 import com.example.myapplication.model.Counselor;
 import java.util.List;
 
@@ -42,10 +42,15 @@ public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.Coun
         // 加载头像
         Glide.with(context).load(counselor.getAvatarUrl()).placeholder(R.drawable.profile).into(holder.counselorAvatar);
 
-        // 预约按钮点击事件
-        holder.appointmentButton.setOnClickListener(v -> {
-            // 这里可以实现预约逻辑，比如跳转到预约详情页
-        });
+        // 让整个卡片都可以点击打开预约弹窗
+        View.OnClickListener openDialogListener = v -> {
+            ReservationDialog dialog = new ReservationDialog(context);
+            dialog.show();
+        };
+
+        // 设置点击事件（整个卡片 & 预约按钮）
+        holder.itemView.setOnClickListener(openDialogListener);
+        holder.appointmentButton.setOnClickListener(openDialogListener);
     }
 
     @Override
