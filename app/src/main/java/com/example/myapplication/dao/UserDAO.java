@@ -126,4 +126,19 @@ public class UserDAO {
         db.delete("users", "user_id=?", new String[]{String.valueOf(userId)});
         db.close();
     }
+    /**
+     * 检查用户名和密码是否匹配
+     */
+    public boolean checkUserCredentials(String username, String password) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username=? AND password=?",
+                new String[]{username, password});
+
+        boolean isValid = cursor.getCount() > 0; // 如果查询到数据，则返回 true
+
+        cursor.close();
+        db.close();
+        return isValid;
+    }
+
 }

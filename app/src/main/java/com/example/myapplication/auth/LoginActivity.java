@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
+import com.example.myapplication.dao.UserDAO;
 import com.example.myapplication.home.HomeActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.auth.RegisterActivity;
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button loginButton;
     private Button registerButton;
+    private UserDAO userDAO; // 添加 UserDAO 实例
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password_edit_text);
         loginButton = findViewById(R.id.login_button);
         registerButton = findViewById(R.id.register_button);
+
+        userDAO = new UserDAO(this); // 初始化 UserDAO
 
         // 设置登录按钮的点击监听器
         loginButton.setOnClickListener(v -> {
@@ -61,9 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         if (username.equals("admin") && password.equals("123456")) {
             // 登录成功
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-
             navigateToHome();
-        } else {
+        } else if (userDAO.checkUserCredentials(username, password)) {
+            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+            navigateToHome();
+        }
+       else {
             // 登录失败
             Toast.makeText(this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
         }
