@@ -15,6 +15,8 @@ import com.example.myapplication.dao.UserDAO;
 import com.example.myapplication.home.HomeActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.auth.RegisterActivity;
+import com.example.myapplication.model.User;
+import com.example.myapplication.utils.UserManager;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
-
+        UserDAO userDAO = new UserDAO(this);
         // 检查用户名和密码是否为空
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
@@ -67,8 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             navigateToHome();
         } else if (userDAO.checkUserCredentials(username, password)) {
-            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            navigateToHome();
+            handleLoginSuccess(username);
         }
        else {
             // 登录失败
@@ -81,6 +82,13 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         startActivity(intent);
         finish(); // 关闭当前 Activity
+    }
+    private void handleLoginSuccess(String username) {
+        UserDAO userDAO = new UserDAO(this);
+        User user = userDAO.getUserByUsername(username);
+        UserManager.getInstance().setUser(user);
 
+        Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+        navigateToHome();
     }
 }

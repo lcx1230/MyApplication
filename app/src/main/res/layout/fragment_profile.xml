@@ -79,11 +79,11 @@
 
         <ImageView
             android:id="@+id/iv_arrow_right"
-            android:layout_width="20dp"
+            android:layout_width="14dp"
             android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
             android:contentDescription="箭头"
-            android:src="@drawable/ic_arrow_right"
-            android:layout_gravity="center_vertical" />
+            android:src="@drawable/ic_arrow_right" />
     </LinearLayout>
 
     <!-- 用户信息区域分隔线 -->
@@ -103,13 +103,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:background="#FFFFFF"
+        android:background="#f5f5f5"
         app:layout_constraintTop_toBottomOf="@id/divider_user_info"
         android:layout_marginTop="10dp">
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
+
             android:src="@drawable/appointment"
             android:contentDescription="服务图标"
             android:layout_gravity="center_vertical" />

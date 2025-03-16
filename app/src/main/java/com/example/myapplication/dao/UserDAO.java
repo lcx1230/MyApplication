@@ -70,30 +70,37 @@ public class UserDAO {
     /**
      * 通过 ID 查询单个用户
      */
+    /**
+     * 通过 ID 查询单个用户
+     */
     public User getUserById(int userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM users WHERE user_id=?", new String[]{String.valueOf(userId)});
         if (cursor.moveToFirst()) {
-            User user = new User();
-            user.setUserId(cursor.getInt(0));
-            user.setUsername(cursor.getString(1));
-            user.setPassword(cursor.getString(2));
-            user.setName(cursor.getString(3));
-            user.setGender(cursor.getString(4));
-            user.setPhone(cursor.getString(5));
-            user.setEmail(cursor.getString(6));
-            user.setAvatarUrl(cursor.getString(7));
-            user.setDepartment(cursor.getString(8));
-            user.setMajor(cursor.getString(9));
-            user.setTitle(cursor.getString(10));
-            user.setRole(cursor.getString(11));
+            User user = parseUser(cursor);
             cursor.close();
             db.close();
             return user;
         }
         cursor.close();
         db.close();
-        return null; // 如果用户不存在，返回 null
+        return null;
+    }
+    /**
+     * 通过用户名获取用户
+     */
+    public User getUserByUsername(String username) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username=?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            User user = parseUser(cursor);
+            cursor.close();
+            db.close();
+            return user;
+        }
+        cursor.close();
+        db.close();
+        return null;
     }
 
     /**
@@ -117,6 +124,20 @@ public class UserDAO {
         db.close();
         return rowsAffected;
     }
+    public int updateUserByExit(User user) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", user.getName());
+        values.put("gender", user.getGender());
+        values.put("phone", user.getPhone());
+        values.put("email", user.getEmail());
+        values.put("avatar_url", user.getAvatarUrl());
+
+        int rows = db.update("users", values, "user_id=?", new String[]{String.valueOf(user.getUserId())});
+        db.close();
+        return rows;
+    }
+
 
     /**
      * 删除用户（Delete）
@@ -139,6 +160,26 @@ public class UserDAO {
         cursor.close();
         db.close();
         return isValid;
+    }
+
+    /**
+     * 解析 Cursor 数据为 User 对象
+     */
+    private User parseUser(Cursor cursor) {
+        User user = new User();
+        user.setUserId(cursor.getInt(0));
+        user.setUsername(cursor.getString(1));
+        user.setPassword(cursor.getString(2));
+        user.setName(cursor.getString(3));
+        user.setGender(cursor.getString(4));
+        user.setPhone(cursor.getString(5));
+        user.setEmail(cursor.getString(6));
+        user.setAvatarUrl(cursor.getString(7));
+        user.setDepartment(cursor.getString(8));
+        user.setMajor(cursor.getString(9));
+        user.setTitle(cursor.getString(10));
+        user.setRole(cursor.getString(11));
+        return user;
     }
 
 }

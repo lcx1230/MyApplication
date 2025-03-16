@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -64,6 +65,16 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+
+            android:name=".home.ProfileActivity"
+            android:exported="true"> <!-- 设置为 true，表示该 Activity 可以被其他应用启动 -->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> &lt;!&ndash; 设置为应用的入口点 &ndash;&gt; -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> &lt;!&ndash; 设置为应用启动器中显示的 Activity &ndash;&gt; -->
+            <!-- </intent-filter> -->
+        </activity>
+
     </application>
 
 </manifest>
