@@ -7,10 +7,21 @@ public class Counselor {
     private String qualifications;
     private String specialization;
     private String avatarUrl;
+    private String certificateUrl; // 新增字段
     private String availableTime; // 存 JSON 数据
 
     public Counselor() {}
 
+    public Counselor(int counselorId, String name, String gender, String qualifications, String specialization, String avatarUrl, String certificateUrl, String availableTime) {
+        this.counselorId = counselorId;
+        this.name = name;
+        this.gender = gender;
+        this.qualifications = qualifications;
+        this.specialization = specialization;
+        this.avatarUrl = avatarUrl;
+        this.certificateUrl = certificateUrl;
+        this.availableTime = availableTime;
+    }
     public Counselor(int counselorId, String name, String gender, String qualifications, String specialization, String avatarUrl, String availableTime) {
         this.counselorId = counselorId;
         this.name = name;
@@ -38,6 +49,9 @@ public class Counselor {
 
     public String getAvatarUrl() { return avatarUrl; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+
+    public String getCertificateUrl() { return certificateUrl; } // 新增 getter
+    public void setCertificateUrl(String certificateUrl) { this.certificateUrl = certificateUrl; } // 新增 setter
 
     public String getAvailableTime() { return availableTime; }
     public void setAvailableTime(String availableTime) { this.availableTime = availableTime; }

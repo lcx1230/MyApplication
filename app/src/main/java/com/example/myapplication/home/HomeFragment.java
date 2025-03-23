@@ -1,6 +1,8 @@
 package com.example.myapplication.home;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -8,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -56,7 +61,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        // 绑定 "即时预约" 卡片
+        View appointmentCard = view.findViewById(R.id.psy_reserve);
+        // 绑定 "心理测试" 卡片
+        View psychologyTestCard = view.findViewById(R.id.psy_test);
         // 生成伪无限循环的图片列表
         extendedImageResIds = new int[realImageResIds.length + 2];
         extendedImageResIds[0] = realImageResIds[realImageResIds.length - 1]; // 最后一张的副本放到第 0 张
@@ -106,14 +114,29 @@ public class HomeFragment extends Fragment {
         });
         // 启动自动轮播
         startAutoSlide();
-//        // 模拟网络爬取的数据（实际开发请替换为真实数据）
-//        articleList = new ArrayList<>();
-//        articleList.add(new HomeArticle("心理学效应", "https://www.xinli001.com/info/100498097",
-//                "https://ossimg.xinli001.com/20241230/15011fcd2a26a32dee08f9ea3cf2bd06.jpeg!120x120",
-//                "阿伦森效应...", "科普", "2024-12-30", "#人类行为研究"));
+
         // 调用爬取方法
         WebScraperHelper.fetchArticles(5, this::updateRecyclerView);
 
+        // ✅ "即时预约" 跳转到 `CounselorFragment`
+        appointmentCard.setOnClickListener(v -> {
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.nav_host_fragment, new CounselorFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+            // 更新底部导航栏状态
+            if (requireActivity() instanceof HomeActivity) {
+                ((HomeActivity) requireActivity()).setSelectedNavigationItem(R.id.nav_consultation);
+            }
+        });
+        // 添加心理测试卡片点击事件
+        psychologyTestCard.findViewById(R.id.psy_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTestDialog();
+            }
+        });
 
         return view;
     }
@@ -172,5 +195,19 @@ public class HomeFragment extends Fragment {
         if (dataPasser != null) {
             dataPasser.onDataPass("Hello from HomeFragment");
         }
+    }
+    //心里测试弹窗
+    private void showTestDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("提示")
+                .setMessage("是否进入心理测试？")
+                .setPositiveButton("是", (dialog, which) -> {
+                    Intent intent = new Intent(requireContext(), PsychologyTestActivity.class);
+                    startActivity(intent);
+                })
+                .setNegativeButton("否", (dialog, which) -> {
+                    Toast.makeText(requireContext(), "已取消测试", Toast.LENGTH_SHORT).show();
+                })
+                .show();
     }
 }

@@ -10,6 +10,7 @@
     <color name="yellow">#E6BF60</color>
     <!-- 底部导航栏背景色 -->
     <color name="bottom_nav_background">#F8F8F8</color>
+    <color name="purple_500">#6200EE</color>
 
 
     <!-- 选中时的绿色 -->

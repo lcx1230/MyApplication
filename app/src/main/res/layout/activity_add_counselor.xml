@@ -1,0 +1,135 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- 右上角的 "添加" 按钮 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end">
+
+            <Button
+                android:id="@+id/btnAddCounselor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@android:drawable/btn_default"
+                android:padding="8dp"
+                android:text="添加"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <!-- 头像 -->
+        <ImageView
+            android:id="@+id/counselorAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="点击上传头像"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add" />
+
+        <!-- 姓名输入框 -->
+        <EditText
+            android:id="@+id/counselorName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@android:drawable/editbox_background"
+            android:hint="请输入姓名"
+            android:padding="12dp"
+            android:textSize="16sp" />
+
+        <!-- 性别选择 -->
+        <RadioGroup
+            android:id="@+id/genderGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/genderMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="男"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/genderFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="女"
+                android:textSize="16sp" />
+        </RadioGroup>
+
+        <!-- 专业选择 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="专业"
+                android:textSize="16sp"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/professionSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/spinner_background"
+                android:dropDownVerticalOffset="0dp"
+                android:popupBackground="@android:color/white"
+                android:drawableEnd="@android:drawable/arrow_down_float"/>
+        </LinearLayout>
+
+        <!-- 资质选择 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="资质"
+                android:textSize="16sp"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/qualificationSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/spinner_background"
+                android:dropDownVerticalOffset="0dp"
+                android:popupBackground="@android:color/white"
+                android:drawableEnd="@android:drawable/arrow_down_float"/>
+        </LinearLayout>
+
+        <!-- 资质证书 -->
+        <ImageView
+            android:id="@+id/certificateImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="点击上传证书"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add" />
+
+    </LinearLayout>
+</ScrollView>

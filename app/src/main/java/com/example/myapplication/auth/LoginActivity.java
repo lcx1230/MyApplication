@@ -67,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         if (username.equals("admin") && password.equals("123456")) {
             // 登录成功
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            navigateToHome();
+            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+            startActivity(intent);
         } else if (userDAO.checkUserCredentials(username, password)) {
             handleLoginSuccess(username);
         }

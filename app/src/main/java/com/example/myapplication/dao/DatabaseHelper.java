@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "campus_psychology.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,9 +39,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "qualifications TEXT, " +
                 "specialization TEXT, " +
                 "avatar_url TEXT, " +
+                "certificate_url TEXT, " + // 新增字段：存储资格证书路径
                 "available_time TEXT NOT NULL DEFAULT '[]'" + // JSON 格式，初始为空
                 ")";
         db.execSQL(CREATE_COUNSELORS_TABLE);
+
 
         // 创建 appointments 表（预约表）
         String CREATE_APPOINTMENTS_TABLE = "CREATE TABLE appointments (" +
@@ -107,16 +109,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("DROP TABLE IF EXISTS users");
-//        db.execSQL("DROP TABLE IF EXISTS counselors");
-//        db.execSQL("DROP TABLE IF EXISTS appointments");
-//        db.execSQL("DROP TABLE IF EXISTS feedback");
-//        db.execSQL("DROP TABLE IF EXISTS articles");
-//        db.execSQL("DROP TABLE IF EXISTS article_comments");
-//        db.execSQL("DROP TABLE IF EXISTS messages");
-//        onCreate(db);
-        if (oldVersion < 2) {
-            db.execSQL("ALTER TABLE counselors ADD COLUMN available_time TEXT NOT NULL DEFAULT '[]'");
+        if (oldVersion < 3) { // 确保数据库版本增加
+            db.execSQL("ALTER TABLE counselors ADD COLUMN certificate_url TEXT");
         }
     }
+
 }

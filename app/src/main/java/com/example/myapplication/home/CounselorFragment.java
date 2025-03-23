@@ -1,6 +1,7 @@
 package com.example.myapplication.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,33 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.CounselorAdapter;
+import com.example.myapplication.dao.CounselorDAO;
 import com.example.myapplication.model.Counselor;
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
+import com.example.myapplication.adapter.CounselorAdapter;
+import com.example.myapplication.dao.CounselorDAO;
+import com.example.myapplication.dialogs.ReservationDialog;
+import com.example.myapplication.model.Counselor;
+import com.example.myapplication.utils.UserManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,41 +48,100 @@ public class CounselorFragment extends Fragment {
     private RecyclerView recyclerView;
     private CounselorAdapter adapter;
     private List<Counselor> counselorList;
+    private List<Counselor> filteredList; // 筛选后的列表
 
     private TextView tvSpecialization, tvQualification, tvGender;
+    private String selectedSpecialization = "不限";
+    private String selectedQualification = "不限";
+    private String selectedGender = "不限";
 
-    private final String[] specializations = {"全部", "心理咨询", "儿童心理", "婚姻家庭", "职场心理", "学生心理"};
-    private final String[] qualifications = {"全部", "国家二级", "国家三级", "国际认证", "心理学博士", "资深导师"};
-    private final String[] genders = {"全部", "男", "女", "其他", "不限"};
+    private final String[] specializations = {"不限", "心理咨询", "儿童心理", "婚姻家庭", "职场心理", "学生心理"};
+    private final String[] qualifications = {"不限", "国家二级", "国家三级", "国际认证", "心理学博士", "资深导师"};
+    private final String[] genders = {"不限", "男", "女"};
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_counselor, container, false);
 
-        // 初始化筛选项
+        // 绑定筛选项
         tvSpecialization = view.findViewById(R.id.tvSpecialization);
         tvQualification = view.findViewById(R.id.tvQualification);
         tvGender = view.findViewById(R.id.tvGender);
 
-        setupDropdown(tvSpecialization, specializations);
-        setupDropdown(tvQualification, qualifications);
-        setupDropdown(tvGender, genders);
+        setupDropdown(tvSpecialization, specializations, "specialization");
+        setupDropdown(tvQualification, qualifications, "qualification");
+        setupDropdown(tvGender, genders, "gender");
 
         // 初始化 RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // 加载默认数据
-        counselorList = getDefaultCounselors();
-        adapter = new CounselorAdapter(getContext(), counselorList);
+        // 从数据库加载数据
+        CounselorDAO dao = new CounselorDAO(getContext());
+        counselorList = dao.getAllCounselorsWithCertificate();
+        filteredList = new ArrayList<>(counselorList);
+
+        // 绑定适配器
+        adapter = new CounselorAdapter(getContext(), filteredList);
         recyclerView.setAdapter(adapter);
+
+        // 监听点击 & 长按事件
+        adapter.setOnCounselorClickListener(new CounselorAdapter.OnCounselorClickListener() {
+            @Override
+            public void onItemClick(Counselor counselor) {
+                int userId= UserManager.getInstance().getUser().getUserId();
+                Log.d("UserId", "onItemClick: "+userId);
+                showReservationDialog(userId,  counselor.getCounselorId());// 普通用户：单击显示预约
+            }
+
+            @Override
+            public void onItemLongClick(Counselor counselor) {
+                showCertificateDialog(counselor.getCertificateUrl());// 普通用户：长按显示资质证书
+            }
+        });
 
         return view;
     }
 
-    // 绑定下拉适配器
-    private void setupDropdown(TextView textView, String[] items) {
+    /**
+     * 显示预约对话框
+     */
+    private void showReservationDialog(int userId, int counselorId) {
+        Log.d("UserId", "onItemClick: "+userId);
+        ReservationDialog dialog = new ReservationDialog(getContext(),userId,counselorId);
+        dialog.show();
+    }
+
+    /**
+     * 显示资格证书
+     */
+    private void showCertificateDialog(String certificateUrl) {
+        if (certificateUrl == null || certificateUrl.isEmpty()) {
+            Toast.makeText(getContext(), "该咨询师暂无资格证书", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("资格证书");
+
+        // 创建 ImageView 来显示证书
+        ImageView imageView = new ImageView(getContext());
+        Glide.with(getContext())
+                .load(certificateUrl)
+                .placeholder(R.drawable.emoji) // 默认占位图
+                .error(R.drawable.emoji) // 加载失败
+                .into(imageView);
+
+        builder.setView(imageView);
+        builder.setPositiveButton("关闭", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    /**
+     * 绑定筛选项的点击事件
+     */
+    private void setupDropdown(TextView textView, String[] items, String filterType) {
         textView.setOnClickListener(v -> {
             androidx.appcompat.widget.PopupMenu popupMenu = new androidx.appcompat.widget.PopupMenu(getContext(), v);
             for (String item : items) {
@@ -63,23 +149,40 @@ public class CounselorFragment extends Fragment {
             }
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 textView.setText(menuItem.getTitle());
+                switch (filterType) {
+                    case "specialization":
+                        selectedSpecialization = menuItem.getTitle().toString();
+                        break;
+                    case "qualification":
+                        selectedQualification = menuItem.getTitle().toString();
+                        break;
+                    case "gender":
+                        selectedGender = menuItem.getTitle().toString();
+                        break;
+                }
+                filterCounselors(); // 筛选数据
                 return true;
             });
             popupMenu.show();
         });
     }
 
-    // 默认数据（保证后续可动态加载数据库数据）
-    private List<Counselor> getDefaultCounselors() {
-        List<Counselor> list = new ArrayList<>();
-        list.add(new Counselor(1, "李老师", "男", "国家二级心理咨询师", "心理咨询", "https://example.com/avatar1.jpg", "可预约"));
-        list.add(new Counselor(2, "王教授", "女", "心理学博士", "儿童心理", "https://example.com/avatar2.jpg", "可预约"));
-        list.add(new Counselor(3, "张医生", "男", "国际认证心理咨询师", "婚姻家庭", "https://example.com/avatar3.jpg", "可预约"));
-        list.add(new Counselor(4, "张医生", "男", "国际认证心理咨询师", "婚姻家庭", "https://example.com/avatar3.jpg", "可预约"));
-        list.add(new Counselor(5, "张医生", "男", "国际认证心理咨询师", "婚姻家庭", "https://example.com/avatar3.jpg", "可预约"));
-        list.add(new Counselor(6, "张医生", "男", "国际认证心理咨询师", "婚姻家庭", "https://example.com/avatar3.jpg", "可预约"));
-        list.add(new Counselor(7, "张医生", "男", "国际认证心理咨询师", "婚姻家庭", "https://example.com/avatar3.jpg", "可预约"));
-        list.add(new Counselor(8, "张医生", "男", "国际认证心理咨询师", "婚姻家庭", "https://example.com/avatar3.jpg", "可预约"));
-        return list;
+    /**
+     * 根据筛选条件更新列表
+     */
+    private void filterCounselors() {
+        filteredList.clear();
+        for (Counselor counselor : counselorList) {
+            boolean matchSpecialization = selectedSpecialization.equals("不限") || counselor.getSpecialization().equals(selectedSpecialization);
+            boolean matchQualification = selectedQualification.equals("不限") || counselor.getQualifications().equals(selectedQualification);
+            boolean matchGender = selectedGender.equals("不限") || counselor.getGender().equals(selectedGender);
+
+            if (matchSpecialization && matchQualification && matchGender) {
+                filteredList.add(counselor);
+            }
+        }
+        adapter.notifyDataSetChanged(); // 刷新 RecyclerView
     }
+
 }
+

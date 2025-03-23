@@ -6,22 +6,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
-import com.example.myapplication.dialogs.ReservationDialog;
 import com.example.myapplication.model.Counselor;
+
 import java.util.List;
 
 public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.CounselorViewHolder> {
 
     private final Context context;
     private final List<Counselor> counselorList;
+    private OnCounselorClickListener onCounselorClickListener;
+
+
+    // 接口回调，交互逻辑交给 Fragment
+    public interface OnCounselorClickListener {
+        void onItemClick(Counselor counselor);  // 预约
+        void onItemLongClick(Counselor counselor); // 查看资格证书
+    }
 
     public CounselorAdapter(Context context, List<Counselor> counselorList) {
         this.context = context;
         this.counselorList = counselorList;
+    }
+
+    public void setOnCounselorClickListener(OnCounselorClickListener listener) {
+        this.onCounselorClickListener = listener;
     }
 
     @NonNull
@@ -42,15 +55,20 @@ public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.Coun
         // 加载头像
         Glide.with(context).load(counselor.getAvatarUrl()).placeholder(R.drawable.profile).into(holder.counselorAvatar);
 
-        // 让整个卡片都可以点击打开预约弹窗
-        View.OnClickListener openDialogListener = v -> {
-            ReservationDialog dialog = new ReservationDialog(context);
-            dialog.show();
-        };
+        // 让 Fragment 处理点击事件
+        holder.itemView.setOnClickListener(v -> {
+            if (onCounselorClickListener != null) {
+                onCounselorClickListener.onItemClick(counselor);
+            }
+        });
 
-        // 设置点击事件（整个卡片 & 预约按钮）
-        holder.itemView.setOnClickListener(openDialogListener);
-        holder.appointmentButton.setOnClickListener(openDialogListener);
+        // 让 Fragment 处理长按事件
+        holder.itemView.setOnLongClickListener(v -> {
+            if (onCounselorClickListener != null) {
+                onCounselorClickListener.onItemLongClick(counselor);
+            }
+            return true;
+        });
     }
 
     @Override
@@ -61,7 +79,6 @@ public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.Coun
     static class CounselorViewHolder extends RecyclerView.ViewHolder {
         ImageView counselorAvatar;
         TextView counselorName, counselorServiceType, counselorDetails;
-        ImageView appointmentButton;
 
         public CounselorViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,7 +86,6 @@ public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.Coun
             counselorName = itemView.findViewById(R.id.counselorName);
             counselorServiceType = itemView.findViewById(R.id.counselorServiceType);
             counselorDetails = itemView.findViewById(R.id.counselorDetails);
-            appointmentButton = itemView.findViewById(R.id.appointmentButton);
         }
     }
 }

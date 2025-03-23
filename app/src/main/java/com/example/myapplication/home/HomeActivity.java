@@ -68,4 +68,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnDa
     public void onDataPass(String data) {
         Toast.makeText(this, "Received data: " + data, Toast.LENGTH_SHORT).show();
     }
+    // 添加更新底部导航栏选中项的方法
+    public void setSelectedNavigationItem(int itemId) {
+        bottomNavigationView.setSelectedItemId(itemId);
+    }
 }

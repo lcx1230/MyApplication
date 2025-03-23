@@ -50,6 +50,7 @@
 
         <!-- 心理测试 卡片 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/psy_test"
             android:layout_width="0dp"
             android:layout_height="110dp"
             android:layout_weight="1"
@@ -84,6 +85,7 @@
 
         <!-- 即时预约 卡片 -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/psy_reserve"
             android:layout_width="0dp"
             android:layout_height="110dp"
             android:layout_weight="1"
