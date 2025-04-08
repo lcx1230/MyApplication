@@ -1,9 +1,11 @@
 package com.example.myapplication.auth;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,10 +20,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.R;
 import com.example.myapplication.dao.CounselorDAO;
 import com.example.myapplication.model.Counselor;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class EditCounselorActivity extends AppCompatActivity {
@@ -105,16 +112,36 @@ public class EditCounselorActivity extends AppCompatActivity {
 
             // 加载头像和证书
             Glide.with(this)
-                    .load(currentCounselor.getAvatarUrl())
+                    .load(Uri.parse((currentCounselor.getAvatarUrl())))
                     .placeholder(R.drawable.emoji)
                     .error(R.drawable.emoji)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                    Target<Drawable> target, boolean isFirstResource) {
+                            Log.e("GlideError1", "Certificate load failed", e);
+                            Log.d("GlideError", "onLoadFailed: "+currentCounselor.getAvatarUrl());
+
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model,
+                                                       Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            Log.d("GlideSuccess1", "Certificate loaded successfully");
+                            return false;
+                        }
+                    })
                     .into(profileImageView);
+            Log.d("check_uri", "loadCounselorData: "+currentCounselor.getAvatarUrl());
 
             Glide.with(this)
-                    .load(currentCounselor.getCertificateUrl())
+                    .load(Uri.parse(currentCounselor.getCertificateUrl()))
                     .placeholder(R.drawable.emoji)
                     .error(R.drawable.emoji)
                     .into(certificateImageView);
+            Log.d("check_uri", "loadCounselorData: "+currentCounselor.getCertificateUrl());
+
         } else {
             Toast.makeText(this, "该咨询师不存在", Toast.LENGTH_SHORT).show();
             finish();

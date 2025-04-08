@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.myapplication.model.Appointment;
+import com.example.myapplication.model.AppointmentDisplay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,4 +94,39 @@ public class AppointmentDAO {
         db.delete("appointments", "appointment_id=?", new String[]{String.valueOf(appointmentId)});
         db.close();
     }
+    public List<AppointmentDisplay> getAppointmentsWithCounselorNameByUser(int userId, String statusFilter) {
+        List<AppointmentDisplay> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String sql = "SELECT a.appointment_id, a.appointment_time, a.status, " +
+                "c.name AS counselor_name " +
+                "FROM appointments a " +
+                "JOIN counselors c ON a.counselor_id = c.counselor_id " +
+                "WHERE a.user_id = ? AND a.status = ? " +
+                "ORDER BY a.appointment_time DESC";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId), statusFilter});
+        while (cursor.moveToNext()) {
+            AppointmentDisplay item = new AppointmentDisplay();
+            item.setAppointmentId(cursor.getInt(0));
+            item.setAppointmentTime(cursor.getString(1));
+            item.setStatus(cursor.getString(2));
+            item.setCounselorName(cursor.getString(3));
+            list.add(item);
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+    public void updateAppointmentStatus(int appointmentId, String newStatus) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("status", newStatus);
+        int rows = db.update("appointments", values, "appointment_id = ?", new String[]{String.valueOf(appointmentId)});
+        Log.d("DBUpdate", "更新了 " + rows + " 行");
+        db.close();
+    }
+
+
+
 }

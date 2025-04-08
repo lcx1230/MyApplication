@@ -53,7 +53,10 @@ public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.Coun
         holder.counselorDetails.setText(counselor.getSpecialization() + " | " + counselor.getQualifications());
 
         // 加载头像
-        Glide.with(context).load(counselor.getAvatarUrl()).placeholder(R.drawable.profile).into(holder.counselorAvatar);
+        Glide.with(context).
+                load(counselor.getAvatarUrl())
+                .placeholder(R.drawable.profile)
+                .into(holder.counselorAvatar);
 
         // 让 Fragment 处理点击事件
         holder.itemView.setOnClickListener(v -> {

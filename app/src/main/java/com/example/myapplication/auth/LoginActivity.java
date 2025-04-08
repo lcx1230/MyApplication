@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         UserDAO userDAO = new UserDAO(this);
         User user = userDAO.getUserByUsername(username);
         UserManager.getInstance().setUser(user);
-
+        Log.d("TestId", "handleLoginSuccess: "+user.getAvatarUrl());
         Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
         navigateToHome();
     }

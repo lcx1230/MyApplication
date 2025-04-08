@@ -18,8 +18,11 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".auth.EditCounselorActivity"
+            android:name=".home.AppointmentActivity"
             android:exported="false" />
+        <activity
+            android:name=".auth.EditCounselorActivity"
+            android:exported="true" />
         <activity
             android:name=".auth.AddCounselorActivity"
             android:exported="true">
@@ -45,10 +48,10 @@
             android:name=".auth.AdminActivity"
             android:exported="true">
 
-<!--             <intent-filter>-->
-<!--             <action android:name="android.intent.action.MAIN" /> &lt;!&ndash; 设置为应用的入口点 &ndash;&gt;-->
-<!--             <category android:name="android.intent.category.LAUNCHER" /> &lt;!&ndash; 设置为应用启动器中显示的 Activity &ndash;&gt;-->
-<!--             </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> &lt;!&ndash; 设置为应用的入口点 &ndash;&gt; -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> &lt;!&ndash; 设置为应用启动器中显示的 Activity &ndash;&gt; -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".home.PsychologyTestActivity"
@@ -63,10 +66,11 @@
         <activity
             android:name=".home.HomeActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" /> &lt;!&ndash; 设置为应用的入口点 &ndash;&gt;-->
-<!--                <category android:name="android.intent.category.LAUNCHER" /> &lt;!&ndash; 设置为应用启动器中显示的 Activity &ndash;&gt;-->
-<!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> &lt;!&ndash; 设置为应用的入口点 &ndash;&gt; -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> &lt;!&ndash; 设置为应用启动器中显示的 Activity &ndash;&gt; -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".auth.RegisterActivity"
@@ -80,25 +84,21 @@
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true"> <!-- 设置为 false，表示该 Activity 不能被其他应用启动 -->
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" /> <!-- 设置为应用的入口点 -->
-             <category android:name="android.intent.category.LAUNCHER" /> <!-- 设置为应用启动器中显示的 Activity -->
-             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" /> <!-- 设置为应用的入口点 -->
+                <category android:name="android.intent.category.LAUNCHER" /> <!-- 设置为应用启动器中显示的 Activity -->
+            </intent-filter>
+            <!-- <meta-data -->
+            <!-- android:name="android.app.lib_name" -->
+            <!-- android:value="" /> -->
         </activity>
         <activity
             android:name=".splash.SplashActivity"
             android:exported="true"> <!-- 设置为 true，表示该 Activity 可以被其他应用启动 -->
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> &lt;!&ndash; 设置为应用的入口点 &ndash;&gt; -->
-
-
             <!-- <category android:name="android.intent.category.LAUNCHER" /> &lt;!&ndash; 设置为应用启动器中显示的 Activity &ndash;&gt; -->
             <!-- </intent-filter> -->
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -73,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
             String avatarUrl = currentUser.getAvatarUrl();
             if (avatarUrl != null && !avatarUrl.isEmpty()) {
                 Uri uri = Uri.parse(avatarUrl);
+                Log.d("TestUri", "loadUserProfile: "+uri);
                 Glide.with(this)
                         .load(uri)
                         .placeholder(R.drawable.default_avatar)

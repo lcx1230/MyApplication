@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 待办预约 -->
+    <TextView
+        android:id="@+id/tv_pending_appointments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="待办预约"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:paddingBottom="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_pending_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- 已取消预约 -->
+    <TextView
+        android:id="@+id/tv_canceled_appointments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已取消预约"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:paddingBottom="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_canceled_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- 完成预约 -->
+    <TextView
+        android:id="@+id/tv_completed_appointments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="完成预约"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:paddingBottom="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_completed_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

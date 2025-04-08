@@ -1,7 +1,10 @@
 package com.example.myapplication.auth;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,11 +13,16 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.CounselorAdapter;
 import com.example.myapplication.dao.CounselorDAO;
@@ -124,17 +132,34 @@ public class CounselorManageActivity extends AppCompatActivity {
      */
     private void showCertificateDialog(String certificateUrl) {
         if (certificateUrl == null || certificateUrl.isEmpty()) {
+            Log.d("GlideError", "onLoadFailed: "+certificateUrl);
             Toast.makeText(this, "该咨询师暂无资格证书", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        Log.d("GlideError", "onLoadFailed: "+certificateUrl);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("资格证书");
 
         // 创建 ImageView 显示证书
         ImageView imageView = new ImageView(this);
         Glide.with(this)
-                .load(certificateUrl)
+                .load(Uri.parse(certificateUrl))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
+                        Log.e("GlideError", "Certificate load failed", e);
+                        Log.d("GlideError", "onLoadFailed: "+certificateUrl);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                                                   Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        Log.d("GlideSuccess", "Certificate loaded successfully");
+                        return false;
+                    }
+                })
                 .placeholder(R.drawable.emoji) // 加载中占位图
                 .error(R.drawable.emoji) // 加载失败
                 .into(imageView);

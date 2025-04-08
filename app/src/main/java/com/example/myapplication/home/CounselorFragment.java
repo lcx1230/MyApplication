@@ -1,5 +1,6 @@
 package com.example.myapplication.home;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.CounselorAdapter;
 import com.example.myapplication.dao.CounselorDAO;
@@ -97,6 +103,7 @@ public class CounselorFragment extends Fragment {
 
             @Override
             public void onItemLongClick(Counselor counselor) {
+                Log.d("CId", "onItemClick: "+counselor.getCertificateUrl());
                 showCertificateDialog(counselor.getCertificateUrl());// 普通用户：长按显示资质证书
             }
         });
@@ -129,6 +136,22 @@ public class CounselorFragment extends Fragment {
         ImageView imageView = new ImageView(getContext());
         Glide.with(getContext())
                 .load(certificateUrl)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<Drawable> target, boolean isFirstResource) {
+                        Log.e("GlideError", "Certificate load failed", e);
+                        Log.d("GlideError", "onLoadFailed: "+certificateUrl);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                                                   Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        Log.d("GlideSuccess", "Certificate loaded successfully");
+                        return false;
+                    }
+                })
                 .placeholder(R.drawable.emoji) // 默认占位图
                 .error(R.drawable.emoji) // 加载失败
                 .into(imageView);

@@ -30,6 +30,7 @@ public class ProfileFragment extends Fragment {
     private ImageView ivUserAvatar;
     private TextView tvUserName;
     private View llUserInfo;
+    private View llWechatServices;
 
     @Nullable
     @Override
@@ -40,6 +41,7 @@ public class ProfileFragment extends Fragment {
         ivUserAvatar = view.findViewById(R.id.iv_user_avatar);
         tvUserName = view.findViewById(R.id.tv_user_name);
         llUserInfo = view.findViewById(R.id.ll_user_info);
+        llWechatServices = view.findViewById(R.id.ll_wechat_services);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         functionList = new ArrayList<>();
@@ -53,6 +55,7 @@ public class ProfileFragment extends Fragment {
         loadUserProfile();
 
         llUserInfo.setOnClickListener(v -> startActivity(new Intent(getContext(), ProfileActivity.class)));
+        llWechatServices.setOnClickListener(v -> startActivity(new Intent(getContext(), AppointmentActivity.class)));
 
         return view;
     }
