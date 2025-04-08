@@ -139,7 +139,7 @@ public class CounselorManageActivity extends AppCompatActivity {
         Log.d("GlideError", "onLoadFailed: "+certificateUrl);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("资格证书");
-
+        // TODO: 2025-04-09 资格证书不显示，其他无碍，需要完善。 
         // 创建 ImageView 显示证书
         ImageView imageView = new ImageView(this);
         Glide.with(this)

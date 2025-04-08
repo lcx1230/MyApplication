@@ -126,6 +126,14 @@ public class AppointmentDAO {
         Log.d("DBUpdate", "更新了 " + rows + " 行");
         db.close();
     }
+    public boolean updateAppointmentTime(int appointmentId, String jsonTime) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("appointment_time", jsonTime);
+        int rows = db.update("appointments", values, "appointment_id = ?", new String[]{String.valueOf(appointmentId)});
+        return rows > 0;
+    }
+
 
 
 

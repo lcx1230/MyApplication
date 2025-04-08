@@ -47,6 +47,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvCounselorName, tvTime, tvStatus;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCounselorName = itemView.findViewById(R.id.tv_counselor_name);
@@ -99,9 +100,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                         Toast.makeText(context, "预约已完成", Toast.LENGTH_SHORT).show();
                         return true;
                     } else if (item.getItemId() == R.id.menu_edit) {
-                        // 目前没有实现修改功能，保留菜单项
+                        // 修改时间
                         if (editAction != null) editAction.execute(appointment);
-                        Toast.makeText(context, "修改功能暂未实现", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "修改已完成", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     return false;

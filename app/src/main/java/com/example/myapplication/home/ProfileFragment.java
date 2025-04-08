@@ -56,7 +56,7 @@ public class ProfileFragment extends Fragment {
 
         llUserInfo.setOnClickListener(v -> startActivity(new Intent(getContext(), ProfileActivity.class)));
         llWechatServices.setOnClickListener(v -> startActivity(new Intent(getContext(), AppointmentActivity.class)));
-
+        // TODO: 2025-04-09 添加退出操作
         return view;
     }
 
