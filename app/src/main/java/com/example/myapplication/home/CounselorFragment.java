@@ -103,8 +103,12 @@ public class CounselorFragment extends Fragment {
 
             @Override
             public void onItemLongClick(Counselor counselor) {
-                Log.d("CId", "onItemClick: "+counselor.getCertificateUrl());
-                showCertificateDialog(counselor.getCertificateUrl());// 普通用户：长按显示资质证书
+                Log.d("Counselor", "Certificate URL: " + counselor.getCertificateUrl());
+                if (counselor.getCertificateUrl() == null || counselor.getCertificateUrl().isEmpty()) {
+                    Toast.makeText(getContext(), "该咨询师暂无资格证书", Toast.LENGTH_SHORT).show();
+                } else {
+                    showCertificateDialog(counselor.getCertificateUrl());
+                }
             }
         });
 

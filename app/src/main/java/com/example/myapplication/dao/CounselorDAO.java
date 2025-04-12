@@ -83,8 +83,8 @@ public class CounselorDAO {
                 counselor.setQualifications(cursor.getString(3));
                 counselor.setSpecialization(cursor.getString(4));
                 counselor.setAvatarUrl(cursor.getString(5));
-                counselor.setAvailableTime(cursor.getString(6));
-                counselor.setCertificateUrl(cursor.getString(7)); // 资格证书路径
+                counselor.setCertificateUrl(cursor.getString(6));
+                counselor.setAvailableTime(cursor.getString(7)); // 资格证书路径
 
                 list.add(counselor);
             } while (cursor.moveToNext());

@@ -80,7 +80,7 @@ public class CounselorAdapter extends RecyclerView.Adapter<CounselorAdapter.Coun
     }
 
     static class CounselorViewHolder extends RecyclerView.ViewHolder {
-        ImageView counselorAvatar;
+        ImageView counselorAvatar,counselorCertification;
         TextView counselorName, counselorServiceType, counselorDetails;
 
         public CounselorViewHolder(@NonNull View itemView) {
