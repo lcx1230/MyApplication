@@ -9,6 +9,8 @@ import android.util.Log;
 import com.example.myapplication.model.Appointment;
 import com.example.myapplication.model.AppointmentDisplay;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +135,34 @@ public class AppointmentDAO {
         int rows = db.update("appointments", values, "appointment_id = ?", new String[]{String.valueOf(appointmentId)});
         return rows > 0;
     }
+    public boolean isTimeSlotBooked(String date, String time) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT appointment_time FROM appointments";
+        Cursor cursor = db.rawQuery(query, null);
 
+        if (cursor.moveToFirst()) {
+            do {
+                String appointmentTimeJson = cursor.getString(0);
+                try {
+                    JSONObject json = new JSONObject(appointmentTimeJson);
+                    String storedDate = json.optString("date");
+                    String storedTime = json.optString("time");
+
+                    // 比较日期和时间段
+                    if (storedDate.equals(date) && storedTime.equals(time)) {
+                        cursor.close();
+                        db.close();
+                        return true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return false;
+    }
 
 
 

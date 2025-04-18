@@ -72,6 +72,10 @@ public class AppointmentActivity extends AppCompatActivity {
                 // 传递 appointmentId 和当前的预约时间
                 EditReservationDialog editDialog = new EditReservationDialog(AppointmentActivity.this,
                         appointment.getAppointmentId());
+                editDialog.setOnAppointmentUpdatedListener(() -> {
+                    // 修改完成后刷新数据
+                    refreshAppointments();
+                });
                 editDialog.show();
             });
 
@@ -94,14 +98,16 @@ public class AppointmentActivity extends AppCompatActivity {
         if (currentUser != null) {
             int userId = currentUser.getUserId();
 
-            // 重新获取数据并更新 RecyclerView
-            pendingList = appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "待办");
-            canceledList = appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "取消");
-            completedList = appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "完成");
-
+            pendingList.clear();
+            pendingList.addAll(appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "待办"));
             pendingAdapter.notifyDataSetChanged();
+
+            canceledList.addAll(appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "取消"));
             canceledAdapter.notifyDataSetChanged();
+
+            completedList.addAll(appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "完成"));
             completedAdapter.notifyDataSetChanged();
+
         }
     }
 }

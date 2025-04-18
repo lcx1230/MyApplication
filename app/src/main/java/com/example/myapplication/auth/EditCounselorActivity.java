@@ -50,6 +50,7 @@ public class EditCounselorActivity extends AppCompatActivity {
     private final String[] specializations = {"不限", "心理咨询", "儿童心理", "婚姻家庭", "职场心理", "学生心理"};
     private final String[] qualifications = {"不限", "国家二级", "国家三级", "国际认证", "心理学博士", "资深导师"};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +121,7 @@ public class EditCounselorActivity extends AppCompatActivity {
                         public boolean onLoadFailed(@Nullable GlideException e, Object model,
                                                     Target<Drawable> target, boolean isFirstResource) {
                             Log.e("GlideError1", "Certificate load failed", e);
-                            Log.d("GlideError", "onLoadFailed: "+currentCounselor.getAvatarUrl());
+                            Log.d("GlideError", "onLoadFailed: " + currentCounselor.getAvatarUrl());
 
                             return false;
                         }
@@ -133,14 +134,14 @@ public class EditCounselorActivity extends AppCompatActivity {
                         }
                     })
                     .into(profileImageView);
-            Log.d("check_uri", "loadCounselorData: "+currentCounselor.getAvatarUrl());
+            Log.d("check_uri", "loadCounselorData: " + currentCounselor.getAvatarUrl());
 
             Glide.with(this)
                     .load(Uri.parse(currentCounselor.getCertificateUrl()))
                     .placeholder(R.drawable.emoji)
                     .error(R.drawable.emoji)
                     .into(certificateImageView);
-            Log.d("check_uri", "loadCounselorData: "+currentCounselor.getCertificateUrl());
+            Log.d("check_uri", "loadCounselorData: " + currentCounselor.getCertificateUrl());
 
         } else {
             Toast.makeText(this, "该咨询师不存在", Toast.LENGTH_SHORT).show();

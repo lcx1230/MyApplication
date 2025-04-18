@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.DateAdapter;
+import com.example.myapplication.auth.EditCounselorActivity;
 import com.example.myapplication.dao.AppointmentDAO;
 import com.example.myapplication.home.AppointmentActivity;
 import com.example.myapplication.model.Appointment;
@@ -42,6 +43,14 @@ public class EditReservationDialog extends Dialog {
     public EditReservationDialog(@NonNull Context context, int appointmentId) {
         super(context);
         this.appointmentId = appointmentId;
+    }
+    public interface OnAppointmentUpdatedListener {
+        void onAppointmentUpdated();
+    }
+    private OnAppointmentUpdatedListener updateListener;
+
+    public void setOnAppointmentUpdatedListener(OnAppointmentUpdatedListener listener) {
+        this.updateListener = listener;
     }
 
     @Override
@@ -91,10 +100,10 @@ public class EditReservationDialog extends Dialog {
                     if (isUpdated) {
                         Toast.makeText(getContext(), "预约修改成功", Toast.LENGTH_LONG).show();
                         // 刷新主界面的数据
-                        if (context instanceof AppointmentActivity) {
-                            ((AppointmentActivity) context).refreshAppointments();
+                        if (updateListener != null) {
+                            updateListener.onAppointmentUpdated();
                         }
-                        dismiss();  // 关闭弹窗
+                        dismiss(); // 关闭弹窗
                     } else {
                         Toast.makeText(getContext(), "修改失败，请重试", Toast.LENGTH_SHORT).show();
                     }
