@@ -11,6 +11,7 @@
     <!-- 底部导航栏背景色 -->
     <color name="bottom_nav_background">#F8F8F8</color>
     <color name="purple_500">#6200EE</color>
+    <color name="refresh_blue">#2196F3</color>
 
 
     <!-- 选中时的绿色 -->

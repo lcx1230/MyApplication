@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.Pair;
 
 import com.example.myapplication.model.Appointment;
 import com.example.myapplication.model.AppointmentDisplay;
@@ -135,35 +136,40 @@ public class AppointmentDAO {
         int rows = db.update("appointments", values, "appointment_id = ?", new String[]{String.valueOf(appointmentId)});
         return rows > 0;
     }
-    public boolean isTimeSlotBooked(String date, String time) {
+    public int getFeedbackIdByAppointmentId(int appointmentId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT appointment_time FROM appointments";
-        Cursor cursor = db.rawQuery(query, null);
+        int feedbackId = -1;  // -1 表示未找到或未设置
+
+        Cursor cursor = db.rawQuery("SELECT feedback_id FROM appointments WHERE appointment_id = ?",
+                new String[]{String.valueOf(appointmentId)});
 
         if (cursor.moveToFirst()) {
-            do {
-                String appointmentTimeJson = cursor.getString(0);
-                try {
-                    JSONObject json = new JSONObject(appointmentTimeJson);
-                    String storedDate = json.optString("date");
-                    String storedTime = json.optString("time");
-
-                    // 比较日期和时间段
-                    if (storedDate.equals(date) && storedTime.equals(time)) {
-                        cursor.close();
-                        db.close();
-                        return true;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } while (cursor.moveToNext());
+            feedbackId = cursor.getInt(0);
         }
+
         cursor.close();
         db.close();
-        return false;
+        return feedbackId;
     }
 
+    public Pair<Integer, Integer> getUserAndCounselorIdByAppointmentId(int appointmentId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Pair<Integer, Integer> result = null;
 
+        Cursor cursor = db.rawQuery(
+                "SELECT user_id, counselor_id FROM appointments WHERE appointment_id = ?",
+                new String[]{String.valueOf(appointmentId)}
+        );
+
+        if (cursor.moveToFirst()) {
+            int userId = cursor.getInt(0);
+            int counselorId = cursor.getInt(1);
+            result = new Pair<>(userId, counselorId);
+        }
+
+        cursor.close();
+        db.close();
+        return result;
+    }
 
 }

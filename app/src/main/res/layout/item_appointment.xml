@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,42 +7,73 @@
     card_view:cardElevation="6dp"
     android:foreground="?attr/selectableItemBackground">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:padding="16dp">
 
-        <!-- 咨询师姓名 -->
-        <TextView
-            android:id="@+id/tv_counselor_name"
+        <!-- 左侧内容 -->
+        <LinearLayout
+            android:id="@+id/info_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="咨询师姓名"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@android:color/black" />
+            android:orientation="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true">
 
-        <!-- 预约时间 -->
-        <TextView
-            android:id="@+id/tv_appointment_time"
+            <TextView
+                android:id="@+id/tv_counselor_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="咨询师姓名"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/tv_appointment_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="预约时间：2025-04-06 10:00"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="状态：待确认"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"
+                android:textColor="@android:color/holo_blue_dark" />
+        </LinearLayout>
+
+        <!-- 右侧反馈区域 -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="预约时间：2025-04-06 10:00"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
-            android:textColor="@android:color/darker_gray" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
 
-        <!-- 状态 -->
-        <TextView
-            android:id="@+id/tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="状态：待确认"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp"
-            android:textColor="@android:color/holo_blue_dark" />
+            <ImageView
+                android:id="@+id/tv_feedback_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_feedback_pending"
+                android:visibility="gone" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_feedback_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未反馈"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="4dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

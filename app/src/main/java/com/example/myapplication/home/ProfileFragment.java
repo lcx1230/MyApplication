@@ -19,9 +19,10 @@ import com.example.myapplication.adapter.FunctionListAdapter;
 import com.example.myapplication.model.Function;
 import com.example.myapplication.model.User;
 import com.example.myapplication.utils.UserManager;
+import com.qweather.sdk.response.weather.WeatherDaily;
+
 import java.util.ArrayList;
 import java.util.List;
-
 public class ProfileFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -31,6 +32,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvUserName;
     private View llUserInfo;
     private View llWechatServices;
+    private View llSettings;
 
     @Nullable
     @Override
@@ -42,13 +44,14 @@ public class ProfileFragment extends Fragment {
         tvUserName = view.findViewById(R.id.tv_user_name);
         llUserInfo = view.findViewById(R.id.ll_user_info);
         llWechatServices = view.findViewById(R.id.ll_wechat_services);
+        llSettings = view.findViewById(R.id.ll_settings);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         functionList = new ArrayList<>();
         functionList.add(new Function(R.drawable.service, "服务"));
         functionList.add(new Function(R.drawable.collection, "收藏"));
         functionList.add(new Function(R.drawable.emoji, "表情"));
-        functionList.add(new Function(R.drawable.settings, "设置"));
+        functionList.add(new Function(R.drawable.card, "卡包"));
         adapter = new FunctionListAdapter(functionList);
         recyclerView.setAdapter(adapter);
 
@@ -56,6 +59,7 @@ public class ProfileFragment extends Fragment {
 
         llUserInfo.setOnClickListener(v -> startActivity(new Intent(getContext(), ProfileActivity.class)));
         llWechatServices.setOnClickListener(v -> startActivity(new Intent(getContext(), AppointmentActivity.class)));
+        llSettings.setOnClickListener(v -> startActivity(new Intent(getContext(), ExitActivity.class)));
         // TODO: 2025-04-09 添加退出操作
         return view;
     }

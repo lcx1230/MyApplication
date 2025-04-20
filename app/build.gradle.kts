@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -46,11 +48,20 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0")
-    implementation ("com.github.bumptech.glide:glide:4.15.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.0")
-    implementation ("org.jsoup:jsoup:1.15.3")
-    implementation ("androidx.core:core:1.9.0")// 或更高版本
+    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+    implementation("com.github.bumptech.glide:glide:4.15.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
+    implementation("org.jsoup:jsoup:1.15.3")
+    implementation("androidx.core:core:1.9.0")// 或更高版本
     implementation("io.coil-kt:coil:2.5.0")
+
+    // 添加 SwipeRefreshLayout 和 RecyclerView 相关依赖
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation("com.squareup.okhttp3:okhttp:3.9.0")
+    implementation("com.google.code.gson:gson:2.6.2")
+
 }

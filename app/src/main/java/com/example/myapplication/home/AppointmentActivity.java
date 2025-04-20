@@ -1,9 +1,11 @@
 package com.example.myapplication.home;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,8 @@ import com.example.myapplication.utils.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 
 public class AppointmentActivity extends AppCompatActivity {
 
@@ -36,7 +40,21 @@ public class AppointmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.refresh_blue),
+                getResources().getColor(R.color.ic_launcher_background),
+                getResources().getColor(R.color.gray)
+        );
 
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // 模拟刷新任务，比如 2 秒后关闭
+            new Handler().postDelayed(() -> {
+                refreshAppointments(); // 你的刷新逻辑
+                swipeRefreshLayout.setRefreshing(false); // 关闭刷新动画
+            }, 3000); // 2000 毫秒，即 2 秒
+        });
         rvPending = findViewById(R.id.rv_pending_appointments);
         rvCanceled = findViewById(R.id.rv_canceled_appointments);
         rvCompleted = findViewById(R.id.rv_completed_appointments);
@@ -102,9 +120,11 @@ public class AppointmentActivity extends AppCompatActivity {
             pendingList.addAll(appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "待办"));
             pendingAdapter.notifyDataSetChanged();
 
+            canceledList.clear();
             canceledList.addAll(appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "取消"));
             canceledAdapter.notifyDataSetChanged();
 
+            completedList.clear();
             completedList.addAll(appointmentDAO.getAppointmentsWithCounselorNameByUser(userId, "完成"));
             completedAdapter.notifyDataSetChanged();
 
