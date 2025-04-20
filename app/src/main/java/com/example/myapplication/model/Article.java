@@ -4,36 +4,66 @@ public class Article {
     private int articleId;
     private String title;
     private String content;
-    private int authorId;
+    private String authorName;  // 修改为 authorName 类型为 String
     private int likeCount;
     private int commentCount;
 
     public Article() {}
 
-    public Article(int articleId, String title, String content, int authorId, int likeCount, int commentCount) {
+    public Article(int articleId, String title, String content, String authorName, int likeCount, int commentCount) {
         this.articleId = articleId;
         this.title = title;
         this.content = content;
-        this.authorId = authorId;
+        this.authorName = authorName;  // 更新构造函数
         this.likeCount = likeCount;
         this.commentCount = commentCount;
     }
 
-    public int getArticleId() { return articleId; }
-    public void setArticleId(int articleId) { this.articleId = articleId; }
+    public int getArticleId() {
+        return articleId;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public String getTitle() {
+        return title;
+    }
 
-    public int getAuthorId() { return authorId; }
-    public void setAuthorId(int authorId) { this.authorId = authorId; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public int getLikeCount() { return likeCount; }
-    public void setLikeCount(int likeCount) { this.likeCount = likeCount; }
+    public String getContent() {
+        return content;
+    }
 
-    public int getCommentCount() { return commentCount; }
-    public void setCommentCount(int commentCount) { this.commentCount = commentCount; }
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAuthorName() {  // 修改为返回 authorName
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {  // 修改为设置 authorName
+        this.authorName = authorName;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
 }

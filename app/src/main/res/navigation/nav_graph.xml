@@ -28,9 +28,9 @@
     <!-- 消息 Fragment -->
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="com.example.myapplication.home.MessagesFragment"
-        android:label="消息"
-        tools:layout="@layout/fragment_messages" />
+        android:name="com.example.myapplication.home.WeatherFragment"
+        android:label="天气"
+        tools:layout="@layout/fragment_weather" />
 
     <!-- 我的 Fragment -->
     <fragment

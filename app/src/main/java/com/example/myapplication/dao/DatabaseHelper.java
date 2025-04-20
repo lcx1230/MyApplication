@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "campus_psychology.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION =5;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -109,9 +109,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 3) { // 确保数据库版本增加
-            db.execSQL("ALTER TABLE counselors ADD COLUMN certificate_url TEXT");
+        if (oldVersion < 5) {
+            // 删除旧的 articles 表
+            db.execSQL("DROP TABLE IF EXISTS articles");
+
+            // 创建新的 articles 表，其中 author_name 为 TEXT 类型
+            String CREATE_ARTICLES_TABLE = "CREATE TABLE articles (" +
+                    "article_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "title TEXT NOT NULL, " +
+                    "content TEXT NOT NULL, " +
+                    "author_name TEXT NOT NULL, " +  // 改为 author_name
+                    "like_count INTEGER DEFAULT 0, " +
+                    "comment_count INTEGER DEFAULT 0" +  // 移除外键约束
+                    ")";
+            db.execSQL(CREATE_ARTICLES_TABLE);
         }
     }
+
+
 
 }

@@ -1,0 +1,68 @@
+<!-- res/layout/activity_add_poetry.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_title"
+            android:hint="古诗标题"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/et_author"
+            android:hint="作者名"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <!-- 四行诗句 -->
+        <EditText
+            android:id="@+id/et_line1"
+            android:hint="第一行诗句"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_line2"
+            android:hint="第二行诗句"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_line3"
+            android:hint="第三行诗句"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_line4"
+            android:hint="第四行诗句"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+
+        <Button
+            android:id="@+id/btn_save_poetry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发布古诗" />
+    </LinearLayout>
+</ScrollView>

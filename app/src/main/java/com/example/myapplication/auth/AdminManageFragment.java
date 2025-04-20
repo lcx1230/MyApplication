@@ -25,7 +25,7 @@ public class AdminManageFragment extends Fragment {
         cardCommunity = view.findViewById(R.id.card_community);
 
         cardConsultant.setOnClickListener(v -> startActivity(new Intent(getActivity(), CounselorManageActivity.class)));
-        cardCommunity.setOnClickListener(v -> startActivity(new Intent(getActivity(), CommunityManageActivity.class)));
+        cardCommunity.setOnClickListener(v -> startActivity(new Intent(getActivity(), AddPoetryActivity.class)));
 
         return view;
     }

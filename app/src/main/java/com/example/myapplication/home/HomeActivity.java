@@ -37,8 +37,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnDa
             } else if (item.getItemId() == R.id.nav_reading) {
                 loadFragment(new ReadingFragment());
                 return true;
-            } else if (item.getItemId() == R.id.nav_messages) {
-                loadFragment(new MessagesFragment());
+            } else if (item.getItemId() == R.id.nav_weather) {
+                loadFragment(new WeatherFragment());
                 return true;
             } else if (item.getItemId() == R.id.nav_profile) {
                 loadFragment(new ProfileFragment());

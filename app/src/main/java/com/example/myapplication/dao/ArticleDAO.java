@@ -23,7 +23,7 @@ public class ArticleDAO {
         ContentValues values = new ContentValues();
         values.put("title", article.getTitle());
         values.put("content", article.getContent());
-        values.put("author_id", article.getAuthorId());
+        values.put("author_name", article.getAuthorName());  // 修改为 author_name
         values.put("like_count", article.getLikeCount());
         values.put("comment_count", article.getCommentCount());
         long id = db.insert("articles", null, values);
@@ -42,7 +42,7 @@ public class ArticleDAO {
                 article.setArticleId(cursor.getInt(0));
                 article.setTitle(cursor.getString(1));
                 article.setContent(cursor.getString(2));
-                article.setAuthorId(cursor.getInt(3));
+                article.setAuthorName(cursor.getString(3));  // 修改为 author_name
                 article.setLikeCount(cursor.getInt(4));
                 article.setCommentCount(cursor.getInt(5));
                 list.add(article);
@@ -63,7 +63,7 @@ public class ArticleDAO {
             article.setArticleId(cursor.getInt(0));
             article.setTitle(cursor.getString(1));
             article.setContent(cursor.getString(2));
-            article.setAuthorId(cursor.getInt(3));
+            article.setAuthorName(cursor.getString(3));  // 修改为 author_name
             article.setLikeCount(cursor.getInt(4));
             article.setCommentCount(cursor.getInt(5));
         }
@@ -78,7 +78,7 @@ public class ArticleDAO {
         ContentValues values = new ContentValues();
         values.put("title", article.getTitle());
         values.put("content", article.getContent());
-        values.put("author_id", article.getAuthorId());
+        values.put("author_name", article.getAuthorName());  // 修改为 author_name
         values.put("like_count", article.getLikeCount());
         values.put("comment_count", article.getCommentCount());
         int rowsAffected = db.update("articles", values, "article_id=?", new String[]{String.valueOf(article.getArticleId())});
