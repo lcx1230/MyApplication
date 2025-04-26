@@ -118,7 +118,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     } else if (item.getItemId() == R.id.menu_edit) {
                         // 修改时间
                         if (editAction != null) editAction.execute(appointment);
-                        Toast.makeText(context, "修改已完成", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "修改已完成", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     return false;

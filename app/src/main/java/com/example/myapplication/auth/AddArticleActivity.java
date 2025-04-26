@@ -11,7 +11,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.dao.ArticleDAO;
 import com.example.myapplication.model.Article;
 
-public class AddPoetryActivity extends AppCompatActivity {
+public class AddArticleActivity extends AppCompatActivity {
 
     private EditText etTitle, etAuthor, etLine1, etLine2, etLine3, etLine4;
     private Button btnSave;
@@ -65,7 +65,7 @@ public class AddPoetryActivity extends AppCompatActivity {
         long newId = articleDAO.insertArticle(article);
 
         if (newId > 0) {
-            Toast.makeText(this, "古诗添加成功！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "添加成功！", Toast.LENGTH_SHORT).show();
             finish(); // 返回上一页
         } else {
             Toast.makeText(this, "添加失败，请重试", Toast.LENGTH_SHORT).show();

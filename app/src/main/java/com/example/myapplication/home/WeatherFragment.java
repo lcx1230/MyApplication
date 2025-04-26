@@ -139,7 +139,11 @@ public class WeatherFragment extends Fragment {
         ivIcon.setImageResource(iconResId);
 
         int backgroundResId = WeatherUtils.getWeatherBackground(sky.value);
-        getView().setBackgroundResource(backgroundResId);  // 更改背景
+        View rootView = getView();
+        if (rootView != null) {
+            rootView.setBackgroundResource(backgroundResId);
+        }
+
     }
 
 

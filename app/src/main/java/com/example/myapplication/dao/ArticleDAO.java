@@ -92,4 +92,32 @@ public class ArticleDAO {
         db.delete("articles", "article_id=?", new String[]{String.valueOf(articleId)});
         db.close();
     }
+    // 获取第一篇文章
+    public Article getFirstArticle() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM articles ORDER BY article_id ASC LIMIT 1", null);
+        Article article = null;
+        if (cursor.moveToFirst()) {
+            article = new Article();
+            article.setArticleId(cursor.getInt(0));
+            article.setTitle(cursor.getString(1));
+            article.setContent(cursor.getString(2));
+            article.setAuthorName(cursor.getString(3));
+            article.setLikeCount(cursor.getInt(4));
+            article.setCommentCount(cursor.getInt(5));
+        }
+        cursor.close();
+        db.close();
+        return article;
+    }
+
+    // 更新点赞数
+    public void updateLikeCount(int articleId, int newLikeCount) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("like_count", newLikeCount);
+        db.update("articles", values, "article_id=?", new String[]{String.valueOf(articleId)});
+        db.close();
+    }
+
 }

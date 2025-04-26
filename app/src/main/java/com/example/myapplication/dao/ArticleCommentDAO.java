@@ -84,4 +84,51 @@ public class ArticleCommentDAO {
         db.delete("article_comments", "comment_id=?", new String[]{String.valueOf(commentId)});
         db.close();
     }
+    // 查询某篇文章的所有评论
+    public List<ArticleComment> getCommentsByArticleId(int articleId) {
+        List<ArticleComment> commentList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                "article_comments", // 表名
+                null, // 查询所有列
+                "article_id = ?", // WHERE 条件
+                new String[]{String.valueOf(articleId)}, // WHERE 参数
+                null, // groupBy
+                null, // having
+                "comment_id ASC" // 改为按 comment_id 排序（或其他你希望的字段）
+        );
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                ArticleComment comment = new ArticleComment();
+                comment.setCommentId(cursor.getInt(cursor.getColumnIndexOrThrow("comment_id")));
+                comment.setArticleId(cursor.getInt(cursor.getColumnIndexOrThrow("article_id")));
+                comment.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow("user_id")));
+                comment.setComment(cursor.getString(cursor.getColumnIndexOrThrow("comment")));
+                commentList.add(comment);
+            }
+            cursor.close();
+        }
+
+        return commentList;
+    }
+
+    // 获取某篇文章的评论数量
+    public int getCommentCountByArticleId(int articleId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        // 使用 COUNT(*) 查询评论数量
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM article_comments WHERE article_id = ?", new String[]{String.valueOf(articleId)});
+
+        int count = 0;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0); // 获取第一列的值，即评论数量
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return count;
+    }
+
 }
